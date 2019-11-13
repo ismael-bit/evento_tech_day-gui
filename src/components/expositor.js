@@ -52,7 +52,7 @@ BtablaExpositor = `<tr>
                     <td>{{NOMBRE}}</td>
                     <td>{{CUENTAGIT}}</td>
                     <td>{{CORREO}}</td>
-                    <td><a href="#" data-id="{{ID3}}" class="txtId2">Editar</td>
+                    <td><a href="#" data-id="{{ID3}}" class="txtId2">Editar - <a href="#" data-id="{{ID4}}" class="txtId3">Eliminar</td>
                     </tr>`
 
 FtablaExpositor = ` </tbody>
@@ -98,6 +98,7 @@ export function ObtenerExpositores(){
             postView = postView + BtablaExpositor.replace('{{ID}}',p.id)
                                               .replace('{{ID2}}',p.id)
                                               .replace('{{ID3}}',p.id)
+                                              .replace('{{ID4}}',p.id)
                                               .replace('{{NOMBRE}}',p.nombre)
                                               .replace('{{CUENTAGIT}}',p.cuenta_github)
                                               .replace('{{CORREO}}',p.correo)
@@ -132,6 +133,19 @@ export function ObtenerExpositores(){
             EditarExpositorId(idExpositor)
         }
 
+        var bes = document.getElementsByClassName("txtId3");
+        for(i=0; i < bes.length;i++)
+        {
+            bes[i].addEventListener('click',DeleteExpositorEventProfile);
+        }
+        function DeleteExpositorEventProfile(event){
+            var ueObject = event.target;
+            var idExpositor = ueObject.getAttribute('data-id');
+            var r = confirm("Desea Elimiar el Expositor?");
+            if (r == true) {
+                EliminarExpositorId(idExpositor)
+            }
+        }
 
 
         document.getElementById("btnregistrar").addEventListener('click',registrarEvent);
@@ -269,6 +283,24 @@ function EditarExpositorId(id){
     })      
     .catch(error => console.error('Error:', error))
     .then(response => console.log('Success:', response));
+}
+
+
+function EliminarExpositorId(id){
+  var data;
+  var cabecera = new Headers();
+  //cabecera.append("Authorization",'Bearer '+ token);                    
+  cabecera.append('Content-Type', 'application/json');
+  fetch(`${API_PATH}/expositor2/${id}`, {
+      method: 'DELETE',
+      body: JSON.stringify(data), // data can be `string` or {object}!
+      headers:cabecera
+  }).then(res =>res.json())
+    .then(res => {
+      ObtenerExpositores()
+    })      
+  .catch(error => console.error('Error:', error))
+  .then(response => console.log('Success:', response));
 }
 
 export default ObtenerExpositores
