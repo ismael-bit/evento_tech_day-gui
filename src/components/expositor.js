@@ -303,4 +303,7 @@ function EliminarExpositorId(id){
   .then(response => console.log('Success:', response));
 }
 
+      
+
+
 export default ObtenerExpositores

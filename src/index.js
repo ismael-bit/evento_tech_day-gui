@@ -1,9 +1,5 @@
 import ObtenerExpositores from './components/expositor';
-
-function ObtenerCharlas(){
-    document.getElementById('app').innerHTML = '<H1>En Proceso</H1>'
-}
-
+import ObtenerCharlas from './components/charla';
 
 function inicio(){
     document.getElementById('app').innerHTML = '<H1>Evento Tech Day</H1>'
