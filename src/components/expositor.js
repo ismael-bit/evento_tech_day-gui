@@ -29,7 +29,6 @@ HtablaExpositor = `<div class="card mb-3">
     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
       <thead>
         <tr>
-          <th>Id</th>
           <th>Nombre</th>
           <th>Cuenta de Hithub</th>
           <th>Correo</th>
@@ -38,7 +37,6 @@ HtablaExpositor = `<div class="card mb-3">
       </thead>
       <tfoot>
         <tr>
-          <th>Id</th>
           <th>Nombre</th>
           <th>Cuenta de Hithub</th>
           <th>Correo</th>
@@ -48,11 +46,10 @@ HtablaExpositor = `<div class="card mb-3">
       <tbody>`
 
 BtablaExpositor = `<tr>
-                    <td><a href="#" data-id="{{ID2}}" class="txtId">{{ID}}</td>
                     <td>{{NOMBRE}}</td>
                     <td>{{CUENTAGIT}}</td>
                     <td>{{CORREO}}</td>
-                    <td><a href="#" data-id="{{ID3}}" class="txtId2">Editar - <a href="#" data-id="{{ID4}}" class="txtId3">Eliminar</td>
+                    <td><a href="#" data-id="{{ID2}}" class="txtId">Ver</a> - <a href="#" data-id="{{ID3}}" class="txtId2">Editar</a> - <a href="#" data-id="{{ID4}}" class="txtId3">Eliminar</a></td>
                     </tr>`
 
 FtablaExpositor = ` </tbody>

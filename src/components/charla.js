@@ -32,7 +32,6 @@ HtablaCharla = `<div class="card mb-3">
     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
       <thead>
         <tr>
-          <th>Id</th>
           <th>Nombre</th>
           <th>Hora</th>
           <th>Tags</th>
@@ -42,7 +41,6 @@ HtablaCharla = `<div class="card mb-3">
       </thead>
       <tfoot>
         <tr>
-          <th>Id</th>
           <th>Nombre</th>
           <th>Hora</th>
           <th>Tags</th>
@@ -53,12 +51,11 @@ HtablaCharla = `<div class="card mb-3">
       <tbody>`;
 
 BtablaCharla = `<tr>
-                    <td><a href="#" data-id="{{ID2}}" class="txtId">{{ID}}</td>
                     <td>{{NOMBRE}}</td>
                     <td>{{HORA}}</td>
                     <td>{{TAGS}}</td>
                     <td>{{EXPOSITOR}}</td>
-                    <td><a href="#" data-id="{{ID3}}" class="txtId2">Editar - <a href="#" data-id="{{ID4}}" class="txtId3">Eliminar</td>
+                    <td><a href="#" data-id="{{ID2}}" class="txtId">Ver</a> - <a href="#" data-id="{{ID3}}" class="txtId2">Editar</a> - <a href="#" data-id="{{ID4}}" class="txtId3">Eliminar</a></td>
                     </tr>`;
 
 FtablaCharla = ` </tbody>
@@ -113,55 +110,47 @@ export function ObtenerCharlas() {
             .replace("{{EXPOSITOR}}", p.expositor.nombre);
       });
 
-      
-      // CharlaSaveTemplate2 = CharlaSaveTemplate;
-      // cargarExpositores().then( res => {
+      document.getElementById("app").innerHTML = CharlaSaveTemplate2 + HtablaCharla + postView + FtablaCharla;
 
-      //   console.log(res)
-        
-      //   })
+      var i;
+      var bes = document.getElementsByClassName("txtId");
+      for (i = 0; i < bes.length; i++) {
+        bes[i].addEventListener("click", showCharlaEventProfile);
+      }
+      function showCharlaEventProfile(event) {
+        var ueObject = event.target;
+        var idCharla = ueObject.getAttribute("data-id");
+        ObtenerCharlaId(idCharla);
+      }
 
-        document.getElementById("app").innerHTML = CharlaSaveTemplate2 + HtablaCharla + postView + FtablaCharla;
+      var bes = document.getElementsByClassName("txtId2");
+      for (i = 0; i < bes.length; i++) {
+        bes[i].addEventListener("click", EditCharlaEventProfile);
+      }
+      function EditCharlaEventProfile(event) {
+        var ueObject = event.target;
+        var idCharla = ueObject.getAttribute("data-id");
+        EditarCharlaId(idCharla);
+      }
 
-        var i;
-        var bes = document.getElementsByClassName("txtId");
-        for (i = 0; i < bes.length; i++) {
-          bes[i].addEventListener("click", showCharlaEventProfile);
+      var bes = document.getElementsByClassName("txtId3");
+      for (i = 0; i < bes.length; i++) {
+        bes[i].addEventListener("click", DeleteCharlaEventProfile);
+      }
+      function DeleteCharlaEventProfile(event) {
+        var ueObject = event.target;
+        var idCharla = ueObject.getAttribute("data-id");
+        var r = confirm("Desea Elimiar el Charla?");
+        if (r == true) {
+          EliminarCharlaId(idCharla);
         }
-        function showCharlaEventProfile(event) {
-          var ueObject = event.target;
-          var idCharla = ueObject.getAttribute("data-id");
-          ObtenerCharlaId(idCharla);
-        }
-  
-        var bes = document.getElementsByClassName("txtId2");
-        for (i = 0; i < bes.length; i++) {
-          bes[i].addEventListener("click", EditCharlaEventProfile);
-        }
-        function EditCharlaEventProfile(event) {
-          var ueObject = event.target;
-          var idCharla = ueObject.getAttribute("data-id");
-          EditarCharlaId(idCharla);
-        }
-  
-        var bes = document.getElementsByClassName("txtId3");
-        for (i = 0; i < bes.length; i++) {
-          bes[i].addEventListener("click", DeleteCharlaEventProfile);
-        }
-        function DeleteCharlaEventProfile(event) {
-          var ueObject = event.target;
-          var idCharla = ueObject.getAttribute("data-id");
-          var r = confirm("Desea Elimiar el Charla?");
-          if (r == true) {
-            EliminarCharlaId(idCharla);
-          }
-        }
-  
-        document
-          .getElementById("btnregistrar")
-          .addEventListener("click", registrarEvent);
+      }
 
-          cargarExpositores()
+      document
+        .getElementById("btnregistrar")
+        .addEventListener("click", registrarEvent);
+
+      cargarExpositores()
 
     })
     .catch(error => console.error("Error:", error))
@@ -195,19 +184,20 @@ function ObtenerCharlaId(id) {
     .then(response => console.log("Success:", response));
 }
 
-function getTags(data){
-  var html=``;
-  $(data).each(function(index,value){
-      html+=`<a href="javascript:void(0)" class="btn btn-link mx-0 px-0">${$.trim(value)}</a>, `;
-    })
-  html = html.slice(0,-2);
+function getTags(data) {
+  var html = ``;
+  $(data).each(function (index, value) {
+    html += `<a href="javascript:void(0)" class="btn btn-link mx-0 px-0">${$.trim(value)}</a>, `;
+  })
+  html = html.slice(0, -2);
   return html;
-} 
+}
 
 function registrarEvent() {
   var nombre = document.getElementById("txtnombre").value;
-  var cuentagithub = document.getElementById("txtcuentagithub").value;
-  var correo = document.getElementById("txtcorreo").value;
+  var hora = document.getElementById("txthora").value;
+  var tags = document.getElementById("txttags").value;
+  var expositor_id = document.getElementById("cboExpositor").value;
 
   if (nombre == "") {
     alert("Debe escribir un nombre");
@@ -215,22 +205,23 @@ function registrarEvent() {
     return;
   }
 
-  if (cuentagithub == "") {
-    alert("Debe escribir una cuenta");
-    document.getElementById("txtcuentagithub").focus();
+  if (hora == "") {
+    alert("Debe escribir el horario");
+    document.getElementById("txthora").focus();
     return;
   }
 
-  if (correo == "") {
-    alert("Debe escribir un correo");
-    document.getElementById("txtcorreo").focus();
+  if (tags == "") {
+    alert("Debe escribir al menos un tags");
+    document.getElementById("txttags").focus();
     return;
   }
 
   var data = {
     nombre: nombre,
-    correo: correo,
-    cuenta_github: cuentagithub
+    tags: tags,
+    expositor_id: expositor_id,
+    hora: hora
   };
   var idCharla = document
     .getElementById("btnregistrar")
@@ -289,7 +280,6 @@ function ActualizarCharla(data, id) {
 function EditarCharlaId(id) {
   var data;
   var cabecera = new Headers();
-  //cabecera.append("Authorization",'Bearer '+ token);
   cabecera.append("Content-Type", "application/json");
   console.log(`${API_PATH}/charla2/${id}`)
   fetch(`${API_PATH}/charla2/${id}`, {
@@ -311,17 +301,9 @@ function EditarCharlaId(id) {
     .then(response => console.log("Success:", response));
 }
 
-    function singleSelectChangeValue() {
-        //Getting Value
-        //var selValue = document.getElementById("singleSelectDD").value;
-        var selObj = document.getElementById("cboExpositor");
-        var selValue = selObj.options[selObj.selectedIndex].value;
-    }
-
 function EliminarCharlaId(id) {
   var data;
   var cabecera = new Headers();
-  //cabecera.append("Authorization",'Bearer '+ token);
   cabecera.append("Content-Type", "application/json");
   fetch(`${API_PATH}/charla2/${id}`, {
     method: "DELETE",
@@ -336,7 +318,7 @@ function EliminarCharlaId(id) {
     .then(response => console.log("Success:", response));
 }
 
- function cargarExpositores() {
+function cargarExpositores() {
   var retorno
   var htmldet = "";
   var data;
